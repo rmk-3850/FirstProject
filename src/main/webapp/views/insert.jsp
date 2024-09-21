@@ -33,13 +33,12 @@
 </head>
 
 <body>
-	<!--< jsp:useBean id="prodDAO" class="ProdDATO.ProdDAO"></jsp:useBean> -->
 	<div id="sidebar" class="active">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header">
                 <div class="d-flex justify-content-between">
                     <div class="logo">
-                        <a href="#"><!-- <img src="assets/images/logo/logo.png" alt="Logo" srcset="">-->LOGO</a>
+                        <a href="#">LOGO</a>
                     </div>
                     <div class="toggler">
                         <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>

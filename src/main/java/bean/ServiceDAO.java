@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -78,4 +80,23 @@ public class ServiceDAO {
         return set;
     }
 */
+    //reservationPost.jsp
+    //예약 서비스명 조회
+    public List<String> getAllServiceNames() throws SQLException {
+	    List<String> serviceNames = new ArrayList<>();
+	    String query = "SELECT ser_name FROM ser"; // 'ser' 테이블에서 서비스 명 가져옴
+
+	    try {
+	        connection = dataSource.getConnection();
+	        statement = connection.prepareStatement(query);
+	        resultSet = statement.executeQuery();
+
+	        while (resultSet.next()) {
+	            serviceNames.add(resultSet.getString("ser_name"));
+	        }
+	    } finally {
+	        freeConnection(); // freeConnection을 finally 블록에서 호출하여 자원을 반환
+	    }
+	    return serviceNames;
+	}
 }

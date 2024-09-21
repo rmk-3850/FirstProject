@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -81,5 +83,24 @@ public class CustomerDAO {
         }
         return set;
     }
-
+    
+    //reservationPost.jsp 
+    //예약자명 조회
+    public List<String> getAllCustomerNames() throws SQLException{
+		List<String> customerNames = new ArrayList<>();
+		String query = "SELECT cus_id, cus_name FROM cus WHERE cus_name=?"; //'cus' 테이블에서 회원명 가져옴
+    	
+		try {
+			connection = dataSource.getConnection();
+			statement = connection.prepareStatement(query);
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				customerNames.add(resultSet.getString("cus_name"));
+			}
+		} finally {
+			freeConnection();
+		}
+		return customerNames;
+    }
 }

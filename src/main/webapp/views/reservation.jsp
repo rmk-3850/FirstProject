@@ -1,3 +1,5 @@
+<%@page import="bean.ReservationDTO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,8 +24,17 @@
 </head>
 
 <body>
-	<!--< jsp:useBean id="prodDAO" class="ProdDATO.ProdDAO">< /jsp:useBean> -->
-
+	<jsp:useBean id="dao" class="bean.ReservationDAO"/>
+	<jsp:useBean id="dto" class="bean.ReservationDTO"/>
+	<%
+		request.setCharacterEncoding("utf-8");
+	
+		//검색 후 페이지로 돌아갔을때 가지고갈 요소들
+		String keyField = request.getParameter("keyField");
+		String keyWord = request.getParameter("keyWord");
+		
+		ArrayList<ReservationDTO> list = (ArrayList)dao.getReservationDTOList(keyField, keyWord);
+	%>
 	<div id="app">
 		<div id="sidebar" class="active">
 			<div class="sidebar-wrapper active">
@@ -120,18 +131,20 @@
 				<hr style="height: 5px;">
 				<div class = "row form-group">
 						<form method="post" action="#" id="" class="col-4 d-flex">
-							<input type="date" class="form-control" id="startDate" name="startDate">&nbsp;&nbsp;~&nbsp;&nbsp;<input type="date" class="form-control" id="endDate" name="endDate">
+							<input type="date" class="form-control" id="startDate" name="startDate">&nbsp;&nbsp;~&nbsp;&nbsp;
+							<input type="date" class="form-control" id="endDate" name="endDate">
 							<input type="button" class="btn btn-outline-success" value="조회">
 						</form>
 						<form class="col-4 d-flex" ></form>
-						<form method="post" action="#" id="" class="col-4 d-flex justify-content-end align-items-end">
-								<input type="text" placeholder="검색" class="form-control">
-								<input type="button" class="btn btn-outline-success" value="조회">
+						<form method="post" action="reservation.jsp" class="col-4 d-flex justify-content-end align-items-end">
+    						<input type="hidden" name="keyField" value="cus_name">
+    						<input type="text" name="keyWord" placeholder="검색" class="form-control">
+    						<input type="submit" class="btn btn-outline-success" value="조회">
 						</form>
 				</div>
 				<section class="section">
 					<div class="buttons d-flex justify-content-end align-items-end">
-						<a href="#" class="btn btn-outline-success" style="margin-right: 0px;">등록</a>
+						<a href="reservationPost.jsp" class="btn btn-outline-success" style="margin-right: 0px;">등록</a>
 					</div>
 					<div class="row" id="table-hover-row">
 						<div class="col-12">
@@ -150,23 +163,20 @@
 												</tr>
 											</thead>
 											<tbody>
-												<%--
-		                                       	<%
-		                                       		request.setCharacterEncoding("utf-8");
-		                                       		ArrayList<ProdDTO> list = (ArrayList)prodDAO.getProdDTOList();
-		                                       		for(ProdDTO board : list ){
-		                                       	%>
-		                                       	
-		                                           <tr>
-		                                               <td class="text-bold-500"><%=board.getPd_code() %></td>
-		                                               <td class="text-bold-500"><%=board.getPd_name() %></td>
-		                                               <td class="text-bold-500"><%=board.getPd_price() %></td>
-		                                               <td class="text-bold-500"><%=board.getPd_ea() %></td>
-		                                           </tr>
-		                                           <%
-		                                       		}
-		                                           %>
-		                                       --%>
+												<%
+												for (ReservationDTO reservationDTO : list) {
+												%>
+												<tr>
+													<td><%=reservationDTO.getRes_no()%></td>
+													<td><%=reservationDTO.getSer_name()%></td>
+													<td><%=reservationDTO.getRes_date()%></td>
+													<td><%=reservationDTO.getRes_time()%></td>
+													<td><a href="reservationRead.jsp?res_no=<%=reservationDTO.getRes_no()%>"><%=reservationDTO.getCus_name()%></a></td>
+													<td><%=reservationDTO.getRes_comm()%></td>
+												</tr>
+												<%
+												}
+												%>
 											</tbody>
 										</table>
 									</div>

@@ -257,21 +257,4 @@ public class ServiceDAO {
 	        	 freeConnection();
 	    }
 	  }
-	public List<String> getAllServiceNames() throws SQLException {
-	    List<String> serviceNames = new ArrayList<>();
-	    String query = "SELECT ser_name FROM ser"; // 'ser' 테이블에서 서비스 명 가져옴
-
-	    try {
-	        connection = dataSource.getConnection();
-	        statement = connection.prepareStatement(query);
-	        statement.executeQuery();
-
-	        while (resultSet.next()) {
-	            serviceNames.add(resultSet.getString("ser_name"));
-	        }
-	    } finally {
-	        freeConnection();
-	    }
-	    return serviceNames;
-	}
 }

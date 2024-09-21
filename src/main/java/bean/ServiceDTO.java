@@ -6,8 +6,7 @@ public class ServiceDTO {
     private String ser_code;
     private String ser_name;
     private int ser_price;
-    private int ser_cnt;
-
+    
 	public String getSer_code() {
 		return ser_code;
 	}
@@ -26,13 +25,6 @@ public class ServiceDTO {
 	public void setSer_price(int ser_price) {
 		this.ser_price = ser_price;
 	}
-	public int getSer_cnt() {
-		return ser_cnt;
-	}
-	public void setSer_cnt(int ser_cnt) {
-		this.ser_cnt = ser_cnt;
-	}
-
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

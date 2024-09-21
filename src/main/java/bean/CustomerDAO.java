@@ -19,9 +19,9 @@ public class CustomerDAO {
     private Context context = null;
     private DataSource dataSource = null;
 
-    private Connection connection = null;
-    private PreparedStatement statement = null;
-    private ResultSet resultSet = null;
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
 
     public CustomerDAO () {
         try {
@@ -85,22 +85,25 @@ public class CustomerDAO {
     }
     
     //reservationPost.jsp 
-    //예약자명 조회
-    public List<String> getAllCustomerNames() throws SQLException{
-		List<String> customerNames = new ArrayList<>();
-		String query = "SELECT cus_id, cus_name FROM cus WHERE cus_name=?"; //'cus' 테이블에서 회원명 가져옴
-    	
-		try {
-			connection = dataSource.getConnection();
-			statement = connection.prepareStatement(query);
-			resultSet = statement.executeQuery();
-			
-			while(resultSet.next()) {
-				customerNames.add(resultSet.getString("cus_name"));
-			}
-		} finally {
-			freeConnection();
-		}
-		return customerNames;
+ // 예약자명 조회
+    public List<String> getAllCustomerNames() throws SQLException {
+        List<String> customerNames = new ArrayList<>();
+        String sql = "SELECT cus_name FROM cus";
+
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                customerNames.add(resultSet.getString("cus_name"));
+            }
+        } catch (SQLException e) {
+            System.out.println("[getAllCustomerNames] Message : " + e.getMessage());
+            System.out.println("[getAllCustomerNames] Class   : " + e.getClass().getSimpleName());
+        } finally {
+            freeConnection();
+        }
+        return customerNames;
     }
 }

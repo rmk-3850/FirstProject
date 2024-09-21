@@ -169,7 +169,7 @@
                             <div class="col-lg-12 mb-12">
                                 <div class="input-group mb-12">
                                     <span class="input-group-text" id="basic-addon1">예약자 명</span>
-                                    <select name="ser_name" class="form-control">
+                                    <select name="cus_name" class="form-control">
                                     <% 
                 						List<String> customerNames = cusDao.getAllCustomerNames();
 

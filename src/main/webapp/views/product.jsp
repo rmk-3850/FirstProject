@@ -164,21 +164,22 @@
 	                                                </tr>
 	                                            </thead>
 	                                            <tbody>
+	                                            	<%--
 	                                            	<%
 	                                            		request.setCharacterEncoding("utf-8");
-	                                            		ArrayList<ProductDTO> list = (ArrayList)prodDAO.getProduct();
+	                                            		ArrayList<ProductDTO> list = (ArrayList<ProductDTO>)prodDAO.getProduct();
 	                                            		for(ProductDTO board : list ){
-	                                            	%>
-	                                            	
-	                                                <tr>
-	                                                    <td class="text-bold-500"><%=board.getPd_code() %></td>
-	                                                    <td class="text-bold-500"><%=board.getPd_name() %></td>
-	                                                    <td class="text-bold-500"><%=board.getPd_price() %></td>
-	                                                    <td class="text-bold-500"><%=board.getPd_ea() %></td>
-	                                                </tr>
+	                                            	%>	                                            	
+			                                                <tr>
+			                                                    <td class="text-bold-500"><%=board.getPd_code() %></td>
+			                                                    <td class="text-bold-500"><%=board.getPd_name() %></td>
+			                                                    <td class="text-bold-500"><%=board.getPd_price() %></td>
+			                                                    <td class="text-bold-500"><%=board.getPd_ea() %></td>
+			                                                </tr>
 	                                                <%
 	                                            		}
 	                                                %>
+	                                                 --%>
 	                                            </tbody>
 	                                        </table>
 	                                    </div>

@@ -208,6 +208,7 @@
 					</div>
 				</div>
 			</footer>
+			</div>
 		</div>
 	</div>
 <script	src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>

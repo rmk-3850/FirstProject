@@ -44,7 +44,7 @@
 					<ul class="menu">
 						<li class="sidebar-title">Menu</li>
 
-						<li class="sidebar-item "><a href="dashBoard.jsp"
+						<li class="sidebar-item "><a href="dashboard.jsp"
 							class='sidebar-link'> <i class="bi bi-grid-fill"></i> <span>HOME</span>
 						</a></li>
 
@@ -56,7 +56,7 @@
 								<li class="submenu-item "><a href="customer.jsp">기타</a></li>
 							</ul></li>
 
-						<li class="sidebar-item active has-sub"><a href="#"
+						<li class="sidebar-item has-sub"><a href="#"
 							class='sidebar-link'> <i class="bi bi-collection-fill"></i> <span>RESERVATION</span>
 						</a>
 							<ul class="submenu ">
@@ -65,7 +65,7 @@
 								<li class="submenu-item "><a href="reservation.jsp">기타</a></li>
 							</ul></li>
 
-						<li class="sidebar-item  has-sub"><a href="#"
+						<li class="sidebar-item active has-sub"><a href="#"
 							class='sidebar-link'> <i class="bi bi-grid-1x2-fill"></i> <span>SERVICE</span>
 						</a>
 							<ul class="submenu ">
@@ -107,7 +107,7 @@
 				<div class="page-title">
 					<div class="row">
 						<div class="col-12 col-md-6 order-md-1 order-last">
-							<h3>판매 관리</h3>
+							<h3>서비스 관리</h3>
 						</div>
 						<div class="col-12 col-md-6 order-md-2 order-first">
 							<nav aria-label="breadcrumb"

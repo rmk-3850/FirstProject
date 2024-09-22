@@ -47,7 +47,7 @@ public class DashBoardDAO {
     }
 
 	public List<ProductDTO> getProduct() {
-		String sql = "SELECT pd_name, pd_ea FROM pd WHERE pd_ea < 4";
+		String sql = "SELECT pd_name, pd_ea FROM pd WHERE pd_ea < 4 ORDER BY pd_ea";
 		ArrayList<ProductDTO> list = new ArrayList<>();
 		try {
 			connection = dataSource.getConnection();			
@@ -69,24 +69,29 @@ public class DashBoardDAO {
 		}
 		return list;
 	}
-
-    public void setProduct (ProductDTO board) {
-		String sql = "";
-		try{
-			connection = dataSource.getConnection();
-			sql = "INSERT INTO pd(pd_code, pd_name, pd_price, pd_ea) VALUES(?, ?, ?, ?)";
-					
-			statement = connection.prepareStatement(sql);			
-			statement.setString(1, board.getPd_code());
-			statement.setString(2, board.getPd_name());
-			statement.setInt(3, board.getPd_price());
-			statement.setInt(4, board.getPd_ea());
-			statement.executeUpdate();
+    
+	public List<ReservationDTO> getReservation() {
+		String sql = "SELECT a.res_time, b.ser_name FROM res a INNER JOIN ser b ON a.ser_code = b.ser_code WHERE res_date=CURDATE() ORDER BY res_time";
+		ArrayList<ReservationDTO> list = new ArrayList<>();
+		try {
+			connection = dataSource.getConnection();			
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
+				ReservationDTO board = new ReservationDTO();
+				board.setRes_time(resultSet.getString("res_time"));
+				board.setSer_name(resultSet.getString("ser_name"));
+				
+				list.add(board);
+			}
 		} catch (SQLException e) {
-            System.out.println("[setProduct] Message : " + e.getMessage());
-            System.out.println("[setProduct] Class   : " + e.getClass().getSimpleName());
-        } finally{
+            System.out.println("[getReservation] Message : " + e.getMessage());
+            System.out.println("[getReservation] Class   : " + e.getClass().getSimpleName());
+        } finally {
 			freeConnection();
 		}
+		return list;
 	}
+
 }

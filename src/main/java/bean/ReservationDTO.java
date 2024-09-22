@@ -1,32 +1,41 @@
 package bean;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
 public class ReservationDTO {
     private int res_no;
-    private Date res_date;
-    private Date res_time;
+    private String res_date;
+    private String res_time;
     private String res_comm;
     private int cus_id;
     private String ser_code;
+    private String ser_name;
 
+	public String getSer_name() {
+		return ser_name;
+	}
+	public void setSer_name(String ser_name) {
+		this.ser_name = ser_name;
+	}
 	public int getRes_no() {
 		return res_no;
 	}
 	public void setRes_no(int res_no) {
 		this.res_no = res_no;
 	}
-	public Date getRes_date() {
+
+	public String getRes_date() {
 		return res_date;
 	}
-	public void setRes_date(Date res_date) {
+	public void setRes_date(String res_date) {
 		this.res_date = res_date;
 	}
-	public Date getRes_time() {
+	public String getRes_time() {
 		return res_time;
 	}
-	public void setRes_time(Date res_time) {
+	public void setRes_time(String res_time) {
 		this.res_time = res_time;
 	}
 	public String getRes_comm() {

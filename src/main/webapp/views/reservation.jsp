@@ -22,7 +22,7 @@
 </head>
 
 <body>
-	<!--< jsp:useBean id="prodDAO" class="ProdDATO.ProdDAO">< /jsp:useBean> -->
+	<jsp:useBean id="prodDao" class="bean.ReservationDAO"></jsp:useBean>
 
 	<div id="app">
 		<div id="sidebar" class="active">
@@ -150,10 +150,10 @@
 												</tr>
 											</thead>
 											<tbody>
-												<%--
+											<%-- 
 		                                       	<%
 		                                       		request.setCharacterEncoding("utf-8");
-		                                       		ArrayList<ProdDTO> list = (ArrayList)prodDAO.getProdDTOList();
+		                                       		ArrayList<ReservationDTO> list = (ArrayList)prodDAO.getProdDTOList();
 		                                       		for(ProdDTO board : list ){
 		                                       	%>
 		                                       	
@@ -166,7 +166,7 @@
 		                                           <%
 		                                       		}
 		                                           %>
-		                                       --%>
+		                                           --%>
 											</tbody>
 										</table>
 									</div>

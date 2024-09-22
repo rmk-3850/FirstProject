@@ -1,4 +1,8 @@
-<%@ page import="java.sql.*" %>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="javax.naming.NamingException"%>
+<%@page import="javax.sql.DataSource"%>
+<%@page import="javax.naming.Context"%>
+<%@page import="java.sql.*"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -48,49 +52,49 @@
         <%
             String cus_id = request.getParameter("cus_id");
             
-	        final String URL = "jdbc:mariadb://svc.sel4.cloudtype.app:32217/acorn";
-	        final String ID = "root";
-	        final String PW = "1820";
-            
-            Connection conn = null;
-            PreparedStatement stmt = null;
-            ResultSet rs = null;
-            
-            try {
-                Class.forName("org.mariadb.jdbc.Driver");
-                conn = DriverManager.getConnection(URL, ID, PW);
+        Context context = null;
+        DataSource dataSource = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
+            connection = dataSource.getConnection();
                 
                 String sql = "SELECT * FROM cus WHERE cus_id = ?";
-                stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, Integer.parseInt(cus_id));
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, Integer.parseInt(cus_id));
                 
-                rs = stmt.executeQuery();
+                resultSet = statement.executeQuery();
                 
-                if (rs.next()) {
+                if (resultSet.next()) {
         %>
         <tr>
             <th>이름</th>
-            <td><%= rs.getString("cus_name") %></td>
+            <td><%= resultSet.getString("cus_name") %></td>
         </tr>
         <tr>
             <th>성별</th>
-            <td><%= rs.getString("cus_gender") %></td>
+            <td><%= resultSet.getString("cus_gender") %></td>
         </tr>
         <tr>
             <th>연락처</th>
-            <td><%= rs.getString("cus_ph") %></td>
+            <td><%= resultSet.getString("cus_ph") %></td>
         </tr>
         <tr>
             <th>이메일</th>
-            <td><%= rs.getString("cus_mail") %></td>
+            <td><%= resultSet.getString("cus_mail") %></td>
         </tr>
         <tr>
             <th>회원 등급</th>
-            <td><%= rs.getString("cus_rank") %></td>
+            <td><%= resultSet.getString("cus_rank") %></td>
         </tr>
         <tr>
             <th>특이사항</th>
-            <td><%= rs.getString("cus_note") %></td>
+            <td><%= resultSet.getString("cus_note") %></td>
         </tr>
         <%
                 } 
@@ -102,9 +106,9 @@
                 e.printStackTrace();
             } finally {
                 try {
-                    if (rs != null) rs.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
+                    if (resultSet != null) resultSet.close();
+                    if (statement != null) statement.close();
+                    if (connection != null) connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

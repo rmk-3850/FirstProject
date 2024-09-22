@@ -1,6 +1,5 @@
-<%@page import="mybean.board.Board"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="mybean.board.BoardDao"%>
+<%@page import="bean.*"%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -133,20 +132,20 @@
         String filterKey = request.getParameter("keyField");
         String filterValue = request.getParameter("filterValue");
 
-        boardDao boardDao = new BoardDao(); 
-        ArrayList<Board> list = (ArrayList<Board>) boardDao.getBoardList(filterKey, filterValue);
+        CustomerDAO customerDAO = new CustomerDAO(); 
+        ArrayList<CustomerDTO> list = (ArrayList<CustomerDTO>) customerDAO.getCustomer(filterKey, filterValue);
         
-        for(Board board : list) {
+        for(CustomerDTO customer : list) {
         %>
         <tr>
-            <td><%= board.getCus_id() %></td>
-            <td><a href="cusRead.jsp?cus_id=<%= board.getCus_id() %>"><%= board.getCus_name() %></a></td>
-            <td><%= board.getCus_gender() %></td>
-            <td><%= board.getCus_ph() %></td>
-            <td><%= board.getCus_mail() %></td>
-            <td><%= board.getCus_reg()  %></td>
-            <td><%= board.getCus_rank() %></td>
-            <td><%= board.getCus_note() != null ? board.getCus_note() : "" %></td> 
+            <td><%= customer.getCus_id() %></td>
+            <td><a href="cusRead.jsp?cus_id=<%= customer.getCus_id() %>"><%= customer.getCus_name() %></a></td>
+            <td><%= customer.getCus_gender() %></td>
+            <td><%= customer.getCus_ph() %></td>
+            <td><%= customer.getCus_mail() %></td>
+            <td><%= customer.getCus_reg()  %></td>
+            <td><%= customer.getCus_rank() %></td>
+            <td><%= customer.getCus_note() != null ? customer.getCus_note() : "" %></td> 
         </tr>
         <%
             }

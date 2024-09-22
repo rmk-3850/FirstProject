@@ -18,9 +18,56 @@
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
 </head>
-
+<script>
+	function check() {
+		if(document.search.keyWord.value == "") {
+			document.search.keyWord.focus();
+			return;
+		}
+		
+		document.search.submit();
+	}
+</script>
 <body>
 	<jsp:useBean id="prodDAO" class="bean.ProductDAO"></jsp:useBean>
+	<jsp:useBean id="board" class="bean.ProductDTO"></jsp:useBean>
+	
+	<%
+		//한글로 받을 수 있기 때문에
+		request.setCharacterEncoding("UTF-8");
+	
+		//검색어 받기
+		String keyWord = request.getParameter("keyWord");
+		
+		//페이징에 필요한 변수
+		int totalcnt = 0;     //총 글의 개수
+		int numPerPage = 10;  //한 페이지당 보여질 글의 개수
+		int totalPage = 0;    //총 페이지 수
+		int nowPage = 0;      //현재 선택된 페이지
+		int beginPerPage = 0; //페이지별 시작번호(중요!) EX) 1,11,21
+		int pagePerBlock = 2; //블럭당 페이지 수
+		int totalBlock = 0;   //총 블럭 수
+		int nowBlock = 0;     //현재 블럭
+		
+		ArrayList<ProductDTO> list = (ArrayList)prodDAO.getProduct_B_List(keyWord);
+		
+		totalcnt = list.size();
+				
+		totalPage = (int)Math.ceil((double)totalcnt / numPerPage); // 페이지 개수 구하기
+
+        if(request.getParameter("nowPage") != null) {
+            nowPage = Integer.parseInt(request.getParameter("nowPage"));
+        }
+
+        // 페이지당 시작번호
+        beginPerPage = nowPage * numPerPage;
+
+        totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);
+
+        if(request.getParameter("nowBlock") != null) {
+            nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
+        }
+	%>
 
     <div id="app">
         <div id="sidebar" class="active">
@@ -136,7 +183,7 @@
 	                <div class="page-title">
 	                    <div class="row">
 	                        <div class="col-12 col-md-6 order-md-1 order-last">
-	                            <h3>PRODUCT</h3>
+	                            <h3>상품 관리</h3>
 	                        </div>
 	                        <div class="col-12 col-md-6 order-md-2 order-first">
 	                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -148,7 +195,16 @@
 	                    </div>
 	                </div>
 	                <hr style="height: 5px;">
+	                <div class="row form-group justify-content-end">
+					    <form method="post" action="product.jsp" class="col-4 d-flex align-items-end" accept-charset="UTF-8">
+					        <input type="text" name="keyWord" placeholder="검색" class="form-control me-2">
+					        <input type="submit" class="btn btn-outline-success" onclick="check()" value="조회">
+					    </form>
+					</div>
 	                <section class="section">
+	                	<div class="buttons d-flex justify-content-end align-items-end">
+							<a href="product_B_add.jsp" class="btn btn-outline-success" style="margin-right: 0px;">등록</a>
+						</div>
 	                    <div class="row" id="table-hover-row">
 	                        <div class="col-12">
 	                            <div class="card">
@@ -159,23 +215,19 @@
 	                                                <tr>
 	                                                    <th>상품코드</th>
 	                                                    <th>상품명</th>
-	                                                    <th>가격</th>
-	                                                    <th>수량</th>
 	                                                </tr>
 	                                            </thead>
 	                                            <tbody>
 	                                            	<%--
 	                                            	<%
-	                                            		request.setCharacterEncoding("utf-8");
-	                                            		ArrayList<ProductDTO> list = (ArrayList<ProductDTO>)prodDAO.getProduct();
-	                                            		for(ProductDTO board : list ){
-	                                            	%>	                                            	
-			                                                <tr>
-			                                                    <td class="text-bold-500"><%=board.getPd_code() %></td>
-			                                                    <td class="text-bold-500"><%=board.getPd_name() %></td>
-			                                                    <td class="text-bold-500"><%=board.getPd_price() %></td>
-			                                                    <td class="text-bold-500"><%=board.getPd_ea() %></td>
-			                                                </tr>
+	                                            		for(int i=beginPerPage; i < beginPerPage + numPerPage && i < totalcnt; i++){
+	                                            			board = list.get(i);
+	                                            	%>
+	                                            	
+	                                                <tr>
+	                                                    <td class="text-bold-500"><a href="product_B_read.jsp?pd_B_code=<%=board.getPd_B_code() %>"><%=board.getPd_B_code() %></a></td>
+	                                                    <td class="text-bold-500"><a href="product_detail.jsp?pd_B_code=<%=board.getPd_B_code() %>"><%=board.getPd_name() %></a></td>
+	                                                </tr>
 	                                                <%
 	                                            		}
 	                                                %>
@@ -187,6 +239,35 @@
 	                            </div>
 	                        </div>
 	                    </div>
+	                    <div class="col-12 d-flex justify-content-center align-items-center">
+							<nav aria-label="Page navigation example">
+								<ul class="pagination pagination-primary">
+									<!-- nowBlock이 0보다 클 때에만 '이전'을 클릭할 수 있게 -->
+						            <% if(nowBlock > 0) { %>
+						                <li class="page-item">
+											<a class="page-link" href="product.jsp?nowPage=<%=(nowBlock-1) * pagePerBlock %>&nowBlock=<%=nowBlock-1%>">
+											<span aria-hidden="true"><i class="bi bi-chevron-left"></i></span></a>
+										</li>
+						            <% } %>
+									<%
+						                int startPage = nowBlock * pagePerBlock + 1;
+						                int endPage = Math.min(startPage + pagePerBlock - 1, totalPage);
+						
+						                for(int i=startPage; i<=endPage; i++) {
+						            %>
+						                <li class="page-item active"><a class="page-link" href="product.jsp?nowPage=<%=i-1 %>&nowBlock=<%=nowBlock%>"><%=i%></a></li>
+						            <%
+						                }
+						            %>
+						            <% if(totalBlock > nowBlock + 1) { %>
+						                <li class="page-item">
+						                	<a class="page-link" href="product.jsp?nowPage=<%=(nowBlock + 1) * pagePerBlock %>&nowBlock=<%=nowBlock + 1%>">
+											<span aria-hidden="true"><i class="bi bi-chevron-right"></i></span></a>
+										</li>
+						            <% } %>
+								</ul>
+							</nav>
+						</div>
 	                </section>
 	            <footer>
 	                <div class="footer clearfix mb-0 text-muted">

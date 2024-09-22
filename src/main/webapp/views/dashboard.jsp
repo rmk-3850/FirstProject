@@ -19,10 +19,12 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <jsp:useBean id="prodDAO" class="bean.ProductDAO"></jsp:useBean>
+    <jsp:useBean id="dashDAO" class="bean.DashboardDAO"></jsp:useBean>
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
@@ -163,11 +165,47 @@
 	                            </ul>
 	                        </div>
                         </div>
+
+                        
                         <div class="col-lg-9 col-md-12">
                             <div class="card">
-									<div id="line"></div>
+									<!-- <div id="bar"></div> -->
+                                    <canvas id="barChart"></canvas>
 							</div>
                         </div>
+
+                        <jsp:setProperty name="dashDAO" property="serviceMap" value="0"/>
+                        <!-- 데이터 조회 여부 확인 -->
+
+                         <script>
+                            let services = ["<%= String.join("\", \"", dashDAO.getServices()) %>"];
+                            let revenues = [<%= java.util.Arrays.toString(dashDAO.getRevenues()).replaceAll("[\\[\\]]", "") %>];
+                        </script> 
+                        	<!-- 그래프 설정 완료 시 별도 파일로 분리 예정 -->
+                        <script>
+                            let barChart = document.getElementById("barChart");
+
+                            let bar = new Chart(barChart, {
+                                type : "bar",
+                                data : {
+                                    labels : services,    // x축 데이터 (문자열 입력)
+                                    datasets : [{
+                                        label : "월별 서비스 매출 현황", // 그래프 이름 (N월 서비스 매출 현황)
+                                        data : revenues,    // y축 데이터 (문자열 입력 _ x축 데이터와 동일한 개수)
+                                        backgroundColor : [
+                                            "rgb(150, 200, 250)",
+                                            "rgb(150, 200, 250)",
+                                            "rgb(150, 200, 250)"
+                                        ],
+                                        borderWidth : .5,
+                                        borderColor : "rgb(50, 50, 50)",
+                                        borderRadius : 10,
+                                        hoverBorderWidth : 1,
+                                        maxBarThickness: 60,
+                                    }]
+                                }
+                            })
+                        </script> 
                         
                     </div>
                 </section>
@@ -180,7 +218,7 @@
 										href="product.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
 									<%
 									request.setCharacterEncoding("utf-8");
-									ArrayList<ProductDTO> list = (ArrayList) prodDAO.getProductToDashBoard();
+									ArrayList<ProductDTO> list = (ArrayList) dashDAO.getProduct();
 									for (ProductDTO board : list) {
 									%>
 									<li class="list-group-item">
@@ -254,6 +292,8 @@
     <script src="assets/js/pages/ui-apexchart.js"></script>    
     <script src="assets/js/main.js"></script>
     <script src="assets/js/calendar.js" defer></script>
+
+
 </body>
 
 </html>

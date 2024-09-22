@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<style>
 		td {
 			white-space: nowrap; /* 텍스트 줄바꿈 방지 */
@@ -31,7 +34,7 @@
 </head>
 
 <body>
-    <jsp:useBean id="dashDAO" class="bean.DashBoardDAO"></jsp:useBean>
+    <jsp:useBean id="dashDAO" class="bean.DashboardDAO"></jsp:useBean>
     <%
 		request.setCharacterEncoding("utf-8");
 		int numPerPage = 5; 	//한 페이지 당 보여질 글의 개수
@@ -78,6 +81,7 @@
 		}		
 		beginPerPage2 = nowPage2*numPerPage;
     %>
+
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
@@ -218,11 +222,47 @@
 	                            </ul>
 	                        </div>
                         </div>
+
+                        
                         <div class="col-lg-9 col-md-12">
-                            <div class="card">	
-								<div id="line"></div>
+                            <div class="card">
+									<!-- <div id="bar"></div> -->
+                                    <canvas id="barChart"></canvas>
 							</div>
                         </div>
+
+                        <jsp:setProperty name="dashDAO" property="serviceMap" value="0"/>
+                        <!-- 데이터 조회 여부 확인 -->
+
+                         <script>
+                            let services = ["<%= String.join("\", \"", dashDAO.getServices()) %>"];
+                            let revenues = [<%= java.util.Arrays.toString(dashDAO.getRevenues()).replaceAll("[\\[\\]]", "") %>];
+                        </script> 
+                        	<!-- 그래프 설정 완료 시 별도 파일로 분리 예정 -->
+                        <script>
+                            let barChart = document.getElementById("barChart");
+
+                            let bar = new Chart(barChart, {
+                                type : "bar",
+                                data : {
+                                    labels : services,    // x축 데이터 (문자열 입력)
+                                    datasets : [{
+                                        label : "월별 서비스 매출 현황", // 그래프 이름 (N월 서비스 매출 현황)
+                                        data : revenues,    // y축 데이터 (문자열 입력 _ x축 데이터와 동일한 개수)
+                                        backgroundColor : [
+                                            "rgb(150, 200, 250)",
+                                            "rgb(150, 200, 250)",
+                                            "rgb(150, 200, 250)"
+                                        ],
+                                        borderWidth : .5,
+                                        borderColor : "rgb(50, 50, 50)",
+                                        borderRadius : 10,
+                                        hoverBorderWidth : 1,
+                                        maxBarThickness: 60,
+                                    }]
+                                }
+                            })
+                        </script> 
                         
                     </div>
                 </section>

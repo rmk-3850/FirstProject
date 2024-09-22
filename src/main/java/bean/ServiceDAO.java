@@ -264,11 +264,14 @@ public class ServiceDAO {
 	    try {
 	        connection = dataSource.getConnection();
 	        statement = connection.prepareStatement(query);
-	        statement.executeQuery();
+	        resultSet = statement.executeQuery(); // resultSet에 결과 할당
 
 	        while (resultSet.next()) {
 	            serviceNames.add(resultSet.getString("ser_name"));
 	        }
+	    } catch (SQLException e) {
+	        System.out.println("[getAllServiceNames] Message : " + e.getMessage());
+	        System.out.println("[getAllServiceNames] Class   : " + e.getClass().getSimpleName());
 	    } finally {
 	        freeConnection();
 	    }

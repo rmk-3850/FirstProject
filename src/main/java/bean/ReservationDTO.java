@@ -1,8 +1,7 @@
 package bean;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.Objects;
+
 
 public class ReservationDTO {
     private int res_no;
@@ -10,9 +9,25 @@ public class ReservationDTO {
     private String res_time;
     private String res_comm;
     private int cus_id;
-    private String ser_code;
+    private String cus_name;
     private String ser_name;
+    private int ser_cnt;
 
+    public int getSer_cnt() {
+		return ser_cnt;
+	}
+	public void setSer_cnt(int ser_cnt) {
+		this.ser_cnt = ser_cnt;
+	}
+
+	private String ser_code;
+
+	public String getCus_name() {
+		return cus_name;
+	}
+	public void setCus_name(String cus_name) {
+		this.cus_name = cus_name;
+	}
 	public String getSer_name() {
 		return ser_name;
 	}
@@ -25,7 +40,6 @@ public class ReservationDTO {
 	public void setRes_no(int res_no) {
 		this.res_no = res_no;
 	}
-
 	public String getRes_date() {
 		return res_date;
 	}
@@ -50,8 +64,9 @@ public class ReservationDTO {
 	public void setCus_id(int cus_id) {
 		this.cus_id = cus_id;
 	}
-	public int getSer_code() {
-		return cus_id;
+
+	public String getSer_code() {
+		return ser_code;
 	}
 	public void setSer_code(String ser_code) {
 		this.ser_code = ser_code;
@@ -69,4 +84,5 @@ public class ReservationDTO {
     public int hashCode() {
         return Objects.hashCode(res_no);
     }
+
 }

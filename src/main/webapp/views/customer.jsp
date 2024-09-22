@@ -1,18 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<%@page import="mybean.board.Board"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="mybean.board.BoardDao"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 관리</title>
-    <style>
+<style>
         body {
             font-family: Arial, sans-serif;
         }
@@ -24,18 +20,6 @@
             font-size: 36px;
             margin: 20px 0;
             border-bottom: 2px solid black;
-        }
-        .filters {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .filters div {
-            display: flex;
-        }
-        .filters input, .filters button, .filters select {
-            margin-right: 10px;
-            padding: 5px;
         }
         table {
             width: 100%;
@@ -49,11 +33,6 @@
         }
         th {
             background-color: #f2f2f2;
-        }
-        .input-row input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 8px;
         }
         .action {
             margin-top: 20px;
@@ -72,124 +51,114 @@
             padding: 5px 10px;
             margin: 5px;
         } 
-        .export-buttons {
+        .excel-download {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
             margin-top: 20px;
         }
-        .export-buttons button {
+        .excel-download button {
             padding: 10px 20px;
             cursor: pointer;
         }
-        .action-buttons {
-            margin-top: 20px;
+        .search-filter {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        .action-buttons button {
-            padding: 10px 20px;
-            cursor: pointer;
+        .search-filter select, .search-filter input, .search-filter button {
+            margin-right: 10px;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        function downloadExcel() {
+            var table = document.getElementById("customerTable");
+            var wb = XLSX.utils.table_to_book(table, {sheet: "회원 관리"});
+            XLSX.writeFile(wb, '회원관리.xlsx');
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
     <h1>회원 관리</h1>
 
-       <!-- 필터: 가입일 및 기간 설정 -->
+    <!-- 필터: 가입일 및 기간 설정 -->
     <div class="filters">
         <div class="date-filter">
-            <div class="checkbox-container">
-                <input type="radio" name="date-filter" id="three-months">
-                <label for="three-months">3개월</label>
-            </div>
-            <div class="checkbox-container">
-                <input type="radio" name="date-filter" id="six-months">
-                <label for="six-months">6개월</label>
-            </div>
-            <div class="checkbox-container">
-                <input type="radio" name="date-filter" id="custom-range">
-                <label for="custom-range">사용자 지정</label>
-            </div>
             <input type="date" value="2024-07-01">
             -
             <input type="date" value="2024-07-31">
-        <div>
-            <button type="button">조회</button>
+            <div>
+                <button type="button">조회</button>
+            </div>
         </div>
-</div>
     </div>
-    <!-- 등록, 수정, 삭제 버튼 -->
+
+    <!-- 등급 및 이름 검색 -->
+    <form method="get" action="customer.jsp">
+        <div class="search-filter">
+            <select name="keyField">
+                <option value="cus_name">이름</option>
+                <option value="cus_rank">등급</option>
+            </select>
+            <input type="text" name="filterValue" id="filterValue">
+            <button type="submit">검색</button>
+        </div>
+    </form>
+
+    <!-- 등록 버튼 -->
     <div class="action">
-        <button>등록</button>
-        <button>수정</button>
-        <button>삭제</button>
+        <button type="button" onclick="location.href='customer_add.jsp'">등록</button>
     </div>
+
     <!-- 회원 관리 테이블 -->
-    <table>
+    <table id="customerTable">
         <thead>
             <tr>
-                <th><input type="checkbox"></th>
                 <th>ID</th>
                 <th>이름</th>
                 <th>성별</th>
                 <th>연락처</th>
                 <th>e-mail</th>
+                <th>회원 등록일</th>
                 <th>회원등급</th>
                 <th>특이사항</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>이건희</td>
-                <td>남</td>
-                <td>010-0000-0000</td>
-                <td>aaa@aaa</td>
-                <td>GOLD</td>
-                <td>팀장</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>2</td>
-                <td>김로민</td>
-                <td>남</td>
-                <td>010-0000-0000</td>
-                <td>bbb@bbb</td>
-                <td>GOLD</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>3</td>
-                <td>염정섭</td>
-                <td>남</td>
-                <td>010-0000-0000</td>
-                <td>ccc@ccc</td>
-                <td>GOLD</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>4</td>
-                <td>김수민</td>
-                <td>여</td>
-                <td>010-0000-0000</td>
-                <td>ddd@ddd</td>
-                <td>GOLD</td>
-                <td></td>
-            </tr>
+        <% 
+        String filterKey = request.getParameter("keyField");
+        String filterValue = request.getParameter("filterValue");
+
+        boardDao boardDao = new BoardDao(); 
+        ArrayList<Board> list = (ArrayList<Board>) boardDao.getBoardList(filterKey, filterValue);
+        
+        for(Board board : list) {
+        %>
+        <tr>
+            <td><%= board.getCus_id() %></td>
+            <td><a href="cusRead.jsp?cus_id=<%= board.getCus_id() %>"><%= board.getCus_name() %></a></td>
+            <td><%= board.getCus_gender() %></td>
+            <td><%= board.getCus_ph() %></td>
+            <td><%= board.getCus_mail() %></td>
+            <td><%= board.getCus_reg()  %></td>
+            <td><%= board.getCus_rank() %></td>
+            <td><%= board.getCus_note() != null ? board.getCus_note() : "" %></td> 
+        </tr>
+        <%
+            }
+        %>
         </tbody>
     </table>
-    <!-- 엑셀 다운로드 및 인쇄 버튼 -->
-    <div class="export-buttons">
-        <button>엑셀 다운로드</button>
-        <button onclick="window.print()">인쇄</button>
+
+    <!-- 엑셀 다운로드 버튼 -->
+    <div class="excel-download">
+        <button onclick="downloadExcel()">엑셀 다운</button>
     </div>
+
     <!-- 페이지네이션 -->
     <div class="pagination">
         <button>&lt;</button>

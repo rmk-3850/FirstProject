@@ -9,6 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="assets/css/calendar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -20,8 +22,6 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 	<style>
 		td {
@@ -43,7 +43,7 @@
 		int totalPage1 = 0; 		//총 페이지 수
 		int nowPage1 = 0; 		//현재 페이지
 		int beginPerPage1 = 0; 	//페이지별 시작번호
-		ArrayList<ProductDTO> list1 = (ArrayList<ProductDTO>) dashDAO.getProduct();
+		ArrayList<DashboardDTO> list1 = (ArrayList<DashboardDTO>) dashDAO.getProduct();
 		totalRecord1 = list1.size();
 		totalPage1 = (totalRecord1 + numPerPage - 1) / numPerPage;
 		if(request.getParameter("nowPage1") != null ){
@@ -64,7 +64,7 @@
 		int totalPage2 = 0; 		//총 페이지 수
 		int nowPage2 = 0; 		//현재 페이지
 		int beginPerPage2 = 0; 	//페이지별 시작번호
-		ArrayList<ReservationDTO> list2 = (ArrayList<ReservationDTO>) dashDAO.getReservation();
+		ArrayList<DashboardDTO> list2 = (ArrayList<DashboardDTO>) dashDAO.getReservation();
 		totalRecord2 = list2.size();
 		totalPage2 = (totalRecord2 + numPerPage - 1) / numPerPage;
 		if(request.getParameter("nowPage2") != null ){
@@ -278,7 +278,7 @@
 									<%
 										for(int i = beginPerPage1; i < beginPerPage1 + numPerPage; i++){
 											if(i==totalRecord1) break;
-											ProductDTO board1 = list1.get(i);
+											DashboardDTO board1 = list1.get(i);
 									%>
 										<tr>
 											<td class="text-bold-500"><%=board1.getPd_name()%></td>
@@ -338,7 +338,7 @@
 									<%
 										for(int i = beginPerPage2; i < beginPerPage2 + numPerPage; i++){
 											if(i==totalRecord2) break;
-											ReservationDTO board2 = list2.get(i);
+											DashboardDTO board2 = list2.get(i);
 									%>
 										<tr>
 											<td class="text-bold-500"><%=board2.getRes_time()%></td>

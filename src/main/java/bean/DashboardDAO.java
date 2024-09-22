@@ -27,8 +27,8 @@ public class DashboardDAO {
             context = new InitialContext();
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
         } catch (NamingException e) {
-            System.out.println("[DashBoardDAO] Message : " + e.getMessage());
-            System.out.println("[DashBoardDAO] Class   : " + e.getClass().getSimpleName());
+            System.out.println("[DashboardDAO] Message : " + e.getMessage());
+            System.out.println("[DashboardDAO] Class   : " + e.getClass().getSimpleName());
         }
     }
     /* DB 연결 해제 */
@@ -49,16 +49,16 @@ public class DashboardDAO {
         }
     }
 
-	public List<ProductDTO> getProduct() {
+	public List<DashboardDTO> getProduct() {
 		String sql = "SELECT pd_name, pd_ea FROM pd WHERE pd_ea < 4 ORDER BY pd_ea";
-		ArrayList<ProductDTO> list = new ArrayList<>();
+		ArrayList<DashboardDTO> list = new ArrayList<>();
 		try {
 			connection = dataSource.getConnection();			
 			statement = connection.prepareStatement(sql);
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){
-				ProductDTO board = new ProductDTO();
+				DashboardDTO board = new DashboardDTO();
 				board.setPd_name(resultSet.getString("pd_name"));
 				board.setPd_ea(resultSet.getInt("pd_ea"));
 				
@@ -73,16 +73,16 @@ public class DashboardDAO {
 		return list;
 	}
     
-	public List<ReservationDTO> getReservation() {
+	public List<DashboardDTO> getReservation() {
 		String sql = "SELECT a.res_time, b.ser_name FROM res a INNER JOIN ser b ON a.ser_code = b.ser_code WHERE res_date=CURDATE() ORDER BY res_time";
-		ArrayList<ReservationDTO> list = new ArrayList<>();
+		ArrayList<DashboardDTO> list = new ArrayList<>();
 		try {
 			connection = dataSource.getConnection();			
 			statement = connection.prepareStatement(sql);
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){
-				ReservationDTO board = new ReservationDTO();
+				DashboardDTO board = new DashboardDTO();
 				board.setRes_time(resultSet.getString("res_time"));
 				board.setSer_name(resultSet.getString("ser_name"));
 				
@@ -103,7 +103,7 @@ public class DashboardDAO {
             2. 복수 선택의 경우 개별 횟수에 추가
                 1> 이름을 "," 으로 split   "반환 타입 : String[]"
                 2> 배열에 해당하는 데이터(서비스명)가 있는 경우 카운트 증가
-            3. ServiceDTO 객체 활용
+            3. DashboardDTO 객체 활용
                 1> 단일 서비스의 DTO를 생성 _ 상품코드의 두 번째 자리가 0
     */
     // 인스턴스 변수 메서드화 : 리팩토링 예정 
@@ -112,7 +112,7 @@ public class DashboardDAO {
     // 이전 매출 현황 조회 시 indexMonth 값 입력 (ex. 이번 달의 경우 0, 한 달 전의 경우 1)
     public void setServiceMap (int indexMonth) {
         // 서비스별 월매출액 저장
-        Map<ServiceDTO, Integer> map = new LinkedHashMap<>();
+        Map<DashboardDTO, Integer> map = new LinkedHashMap<>();
 		try{
 			connection = dataSource.getConnection();
             // 단일 서비스를 조회하여 map 구조 초기화
@@ -121,7 +121,7 @@ public class DashboardDAO {
 			statement = connection.prepareStatement(sql);			
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ServiceDTO service = new ServiceDTO();
+                DashboardDTO service = new DashboardDTO();
                 service.setSer_code(resultSet.getString("ser_code"));
                 service.setSer_name(resultSet.getString("ser_name"));   // 통계 자료에 출력하기 위한 ser_name
                 service.setSer_price(resultSet.getInt("ser_price"));    // 서비스별 이용 요금
@@ -140,8 +140,8 @@ public class DashboardDAO {
             	// 복수 선택 서비스 분리
                 String[] ser_nameArr = resultSet.getString("ser_name").split(",");
                 for (String ser_name : ser_nameArr) {
-                    Set<ServiceDTO> keys = map.keySet();
-                    for (ServiceDTO service : keys) {
+                    Set<DashboardDTO> keys = map.keySet();
+                    for (DashboardDTO service : keys) {
                         if (service.getSer_name().equals(ser_name)) {
                             // 서비스 시술 횟수 카운트
                             service.setSer_cnt(service.getSer_cnt() + 1);
@@ -167,12 +167,12 @@ public class DashboardDAO {
             // 배열에 저장
             services = new String[map.size()];
             revenues = new int[map.size()];
-            Set<ServiceDTO> keys = map.keySet();
-            java.util.Iterator<ServiceDTO> iterator = keys.iterator();
+            Set<DashboardDTO> keys = map.keySet();
+            java.util.Iterator<DashboardDTO> iterator = keys.iterator();
             // 카운터
             int i = 0;
             while (iterator.hasNext()) {
-            	ServiceDTO service = iterator.next();
+            	DashboardDTO service = iterator.next();
                 	services[i] = service.getSer_name();
                 	revenues[i] = map.get(service);
                 	i++;

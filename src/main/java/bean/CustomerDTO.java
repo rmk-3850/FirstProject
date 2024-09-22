@@ -9,12 +9,26 @@ public class CustomerDTO {
     private String cus_mail;
     private String cus_reg;
     private String cus_rank;
+	private String cus_gender;
+	private String cus_note;
     
 	public int getCus_id() {
 		return cus_id;
 	}
 	public void setCus_id(int cus_id) {
 		this.cus_id = cus_id;
+	}
+	public String getCus_gender() {
+		return cus_gender;
+	}
+	public void setCus_gender(String cus_gender) {
+		this.cus_gender = cus_gender;
+	}
+	public String getCus_note() {
+		return cus_note;
+	}
+	public void setCus_note(String cus_note) {
+		this.cus_note = cus_note;
 	}
 	public String getCus_name() {
 		return cus_name;

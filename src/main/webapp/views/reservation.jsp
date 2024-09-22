@@ -23,9 +23,36 @@
     <jsp:useBean id="dto" class="bean.ReservationDTO"/>
     <%
         request.setCharacterEncoding("utf-8");
+    	
+		//페이징에 필요한 변수들
+		int totalRecord = 0; //총 글의 개수
+		int numPerPage = 10; //한 페이지 당 보여질 글의 개수
+		int totalPage = 0; //총 페이지 수
+		int nowPage = 0; // 현재 선택된 페이지
+		int beginPerPage = 0; // 페이지별 시작 번호
+		int pagePerBlock = 5; // 블럭 당 페이지 수
+		int totalBlock = 0; //총 블럭 수
+		int nowBlock = 0; //현재 블럭
+    
+    	//검색 후 페이지로 돌아갔을때 가지고갈 요소들
         String keyField = request.getParameter("keyField");
         String keyWord = request.getParameter("keyWord");
         ArrayList<ReservationDTO> list = (ArrayList)dao.getReservationDTOList(keyField, keyWord);
+        
+        totalRecord = list.size();
+        totalPage = (int)Math.ceil((double)totalRecord / numPerPage); 
+        //나머지도 한페이지로 해줘야하기때문에 무조건 올림 해준다
+        
+        if(request.getParameter("nowPage") != null)
+           nowPage = Integer.parseInt(request.getParameter("nowPage"));
+        //nowPage가 있을때에만 이것을 실행해라
+        
+        beginPerPage = nowPage * numPerPage;
+        
+        totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);
+        
+        if(request.getParameter("nowBlock") != null)
+           nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
     %>
     <div id="app">
         <div id="sidebar" class="active">
@@ -136,7 +163,10 @@
                                             </thead>
                                             <tbody>
                                                 <%
-                                                for (ReservationDTO reservationDTO : list) {
+                                                for (int i = beginPerPage; i<beginPerPage + numPerPage; i++) {
+                                                	if(i==totalRecord)
+                                                		break;
+                                                	ReservationDTO reservationDTO = list.get(i);
                                                 %>
                                                 <tr>
                                                     <td><%= reservationDTO.getRes_no() %></td>
@@ -163,11 +193,19 @@
                     <div class="col-12 d-flex justify-content-center align-items-center">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination pagination-primary">
-                                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true"><i class="bi bi-chevron-left"></i></span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true"><i class="bi bi-chevron-right"></i></span></a></li>
+                            <% if(nowBlock>0){ %>
+                                <li class="page-item">
+                                <a class="page-link" href="reservation.jsp?nowPage=<%= ((nowBlock-1)*pagePerBlock) %>&nowBlock=<%= nowBlock-1%>">
+                                <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span></a></li>
+                            <% } %>  
+                            <% for (int i=0; i<pagePerBlock; i++){ %>
+                                <li class="page-item active"><a class="page-link" href="reservation.jsp?nowPage=<%=(nowBlock*pagePerBlock)+i%>&nowBlock=<%=nowBlock%>">
+                                <%=(nowBlock * pagePerBlock)+i +1 %></a></li>
+                            <% } %>   
+                            <% if(totalBlock>nowBlock+1){ %>
+                                <li class="page-item"><a class="page-link" href="reservation.jsp?nowPage=<%=(nowBlock+1)*pagePerBlock%>&nowBlock=<%=nowBlock+1%>">
+                                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span></a></li>
+                            <% } %>
                             </ul>
                         </nav>
                     </div>

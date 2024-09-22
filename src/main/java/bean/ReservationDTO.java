@@ -13,8 +13,16 @@ public class ReservationDTO {
     private int cus_id;
     private String cus_name;
     private String ser_name;
+    private int ser_cnt;
 
-    private String ser_code;
+    public int getSer_cnt() {
+		return ser_cnt;
+	}
+	public void setSer_cnt(int ser_cnt) {
+		this.ser_cnt = ser_cnt;
+	}
+
+	private String ser_code;
 
 	public String getCus_name() {
 		return cus_name;

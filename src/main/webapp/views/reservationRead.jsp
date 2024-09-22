@@ -41,11 +41,7 @@
     
     <%
     	int res_no = Integer.parseInt(request.getParameter("res_no"));
-    	resDto = resDao.getReservationDTO(res_no);
-    	
-    	out.println("res_no: " + res_no);
-    	out.println("resDto: " + resDto);
-    	
+    	resDto = resDao.getReservationDTO(res_no);   	
     %>
 	<div id="sidebar" class="active">
         <div class="sidebar-wrapper active">
@@ -213,8 +209,8 @@
                             </div>
                             <br><br><br>
                             <div class="button-container">
-                                <button type="button" onclick="location.href='reservationUpdate.jsp'">수정</button>
-                                <button type="button" onclick="location.href='reservationDelete.jsp'">삭제</button>
+                                <button type="button" onclick="location.href='reservationUpdate.jsp?res_no=<%= resDto.getRes_no() %>'">수정</button>
+                                <button type="button" onclick="location.href='reservationDelete.jsp?res_no=<%= resDto.getRes_no() %>'">삭제</button>
                                 <button type="button" onclick="location.href='reservation.jsp'">목록</button>
                             </div>
                         </div>

@@ -71,7 +71,7 @@ public class AdminDAO {
         }
     }
     
- // 로그인 회원 조회
+    // 로그인 회원 조회
     public AdminDTO getAdmin(AdminDTO dto) {
     	AdminDTO admin = null;
     	try {

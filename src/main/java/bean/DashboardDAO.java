@@ -27,8 +27,8 @@ public class DashboardDAO {
             context = new InitialContext();
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
         } catch (NamingException e) {
-            System.out.println("[DashBoardDAO] Message : " + e.getMessage());
-            System.out.println("[DashBoardDAO] Class   : " + e.getClass().getSimpleName());
+            System.out.println("[DashboardDAO] Message : " + e.getMessage());
+            System.out.println("[DashboardDAO] Class   : " + e.getClass().getSimpleName());
         }
     }
     /* DB 연결 해제 */

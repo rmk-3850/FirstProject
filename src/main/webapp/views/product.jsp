@@ -49,7 +49,7 @@
 		int totalBlock = 0;   //총 블럭 수
 		int nowBlock = 0;     //현재 블럭
 		
-		ArrayList<ProductDTO> list = (ArrayList)prodDAO.getProduct_B_List(keyWord);
+		ArrayList<ProductDTO> list = (ArrayList<ProductDTO>)prodDAO.getProduct_B_List(keyWord);
 		
 		totalcnt = list.size();
 				
@@ -218,7 +218,7 @@
 	                                                </tr>
 	                                            </thead>
 	                                            <tbody>
-	                                            	<%--
+	                                            	
 	                                            	<%
 	                                            		for(int i=beginPerPage; i < beginPerPage + numPerPage && i < totalcnt; i++){
 	                                            			board = list.get(i);
@@ -231,7 +231,7 @@
 	                                                <%
 	                                            		}
 	                                                %>
-	                                                 --%>
+	                                                
 	                                            </tbody>
 	                                        </table>
 	                                    </div>

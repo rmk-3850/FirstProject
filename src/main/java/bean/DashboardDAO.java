@@ -13,6 +13,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.json.simple.JSONArray;
+
 public class DashboardDAO {
     private Context context = null;
     private DataSource dataSource = null;
@@ -136,7 +138,7 @@ public class DashboardDAO {
 			statement = connection.prepareStatement(sql);			
             resultSet = statement.executeQuery();
             while(resultSet.next()) {
-            	// 복수 선택 서비스 분리 : 서비스명으로 조회 후 카운트 증가 & 기본 커트 횟수 증가
+            	// 복수 선택 서비스 분리 : 서비스명으로 조회 후 카운트 증가
                 String[] ser_nameArr = resultSet.getString("ser_name").split(",");
                 for (String ser_name : ser_nameArr) {
                     for (DashboardDTO dto : list) {
@@ -153,8 +155,7 @@ public class DashboardDAO {
                     // }
                 }
             }
-
-
+            
             // 배열에 저장
             String[] servicesArr = new String[list.size()];
             String[] revenuesArr = new String[list.size()];
@@ -163,14 +164,9 @@ public class DashboardDAO {
                 servicesArr[i] = list.get(i).getSer_name();
                 revenuesArr[i] = String.valueOf(list.get(i).getChart_revenue()/10000);
             }
-            /* [
-    {"no":"1", "name":"임꺽정", "job":"개그맨"},
-    {"no":"2", "name":"홍길동", "job":"탤런트"},
-    {"no":"3", "name":"신돌석", "job":"영화배우"}
-] */
             
-            services = "[{" + String.join("}, {",  servicesArr) + "}]";
-            revenues = "[{" + String.join("}, {",  revenuesArr) + "}]";
+            services = "[\"" + String.join("\", \"",  servicesArr) + "\"]";
+            revenues = "[" + String.join(", ",  revenuesArr) + "]";
             System.out.println(services);
             System.out.println(revenues);
 		} catch (SQLException e) {

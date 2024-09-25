@@ -47,9 +47,6 @@ window.onload = () => {
       },
     };
   }
-  let getChart = () => {
-    
-  }
   // 
   let getServiceRevenueChart = (services, revenues) => {
     // 그래프 옵션 설정

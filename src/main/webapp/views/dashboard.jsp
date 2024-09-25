@@ -165,10 +165,25 @@
                                 </li>
                              </ul>
                         </li>
- 
+                        
+                         <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-person-fill"></i>
+                                <span>MEMBER</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="member.jsp">직원 관리</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="member.jsp">기타</a>
+                                </li>                                
+                            </ul>
+                        </li>
+                        
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
-                                <i class="bi bi-pen-fill"></i>
+                                <i class="bi bi-megaphone-fill"></i>
                                 <span>NOTICE</span>
                             </a>
                             <ul class="submenu ">

@@ -1,4 +1,4 @@
-package loginbean;
+package bean;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +50,7 @@ public class LoginDAO {
 		String sql = "SELECT branch_code, branch_pw FROM branch";
 		ArrayList<LoginDTO> list = new ArrayList<>();
 		try {
-			connection = dataSource.getConnection();			
+			connection = dataSource.getConnection();
 			statement = connection.prepareStatement(sql);
 			resultSet = statement.executeQuery();
 			

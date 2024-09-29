@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import imodel.ICommand;
-import loginbean.LoginDAO;
-import loginbean.LoginDTO;
+import bean.LoginDAO;
+import bean.LoginDTO;
 
 public class LoginConfirmCommand implements ICommand {
 
@@ -21,12 +21,12 @@ public class LoginConfirmCommand implements ICommand {
 		String inputIdReg = req.getParameter("idreg"); //on&null
 		
 		LoginDAO logindao = new LoginDAO();
-		ArrayList<LoginDTO> list = (ArrayList)logindao.getMGRInfo();
-		String branch_code = list.getFirst().getBranch_code();
-		String branch_pw = list.getFirst().getBranch_pw();
+		ArrayList<LoginDTO> list = (ArrayList<LoginDTO>)logindao.getMGRInfo();
+		String branch_code = list.get(0).getBranch_code();
+		String branch_pw = list.get(0).getBranch_pw();
 		
-		if(inputId == branch_code && inputPw == branch_pw){
-			if(inputIdReg == "on") {
+		if(inputId.equals(branch_code) && inputPw.equals(branch_pw)){
+			if(inputIdReg != null) {
 				Cookie cookie_branch_code = new Cookie("id", branch_code);		
 				resp.addCookie(cookie_branch_code);
 				

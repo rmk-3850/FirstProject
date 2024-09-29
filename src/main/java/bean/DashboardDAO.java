@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,7 +18,7 @@ import javax.sql.DataSource;
 import org.json.simple.JSONArray;
 
 public class DashboardDAO {
-    private Context context = null;
+	private Context context = null;
     private DataSource dataSource = null;
     private Connection connection = null;
     private PreparedStatement statement = null;
@@ -49,8 +51,8 @@ public class DashboardDAO {
         }
     }
 
-	public List<DashboardDTO> getProduct() {
-		String sql = "SELECT pd_name, pd_ea FROM pd WHERE pd_ea < 4 ORDER BY pd_ea";
+	public List<DashboardDTO> getNotice() {
+		String sql = "SELECT notice_title FROM notice WHERE notice_check = 1 ORDER BY notice_reg desc";
 		ArrayList<DashboardDTO> list = new ArrayList<>();
 		try {
 			connection = dataSource.getConnection();			
@@ -59,8 +61,31 @@ public class DashboardDAO {
 			
 			while(resultSet.next()){
 				DashboardDTO board = new DashboardDTO();
-				board.setPd_name(resultSet.getString("pd_name"));
-				board.setPd_ea(resultSet.getInt("pd_ea"));
+				board.setNotice_title(resultSet.getString("notice_title"));
+				
+				list.add(board);
+			}
+		} catch (SQLException e) {
+            System.out.println("[getNotice] Message : " + e.getMessage());
+            System.out.println("[getNotice] Class   : " + e.getClass().getSimpleName());
+        } finally {
+			freeConnection();
+		}
+		return list;
+	}
+    
+	public List<DashboardDTO> getProduct() {
+		String sql = "SELECT product_name, product_ea FROM product WHERE product_ea < 4 ORDER BY product_ea";
+		ArrayList<DashboardDTO> list = new ArrayList<>();
+		try {
+			connection = dataSource.getConnection();			
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
+				DashboardDTO board = new DashboardDTO();
+				board.setProduct_name(resultSet.getString("product_name"));
+				board.setProduct_ea(resultSet.getInt("product_ea"));
 				
 				list.add(board);
 			}
@@ -73,8 +98,10 @@ public class DashboardDAO {
 		return list;
 	}
     
+	//board.setReservation_date(resultSet.getObject("reservation_date", LocalDateTime.class));
+	
 	public List<DashboardDTO> getReservation() {
-		String sql = "SELECT a.res_time, b.ser_name FROM res a INNER JOIN ser b ON a.ser_code = b.ser_code WHERE res_date=CURDATE() ORDER BY res_time";
+		String sql = "SELECT a.reservation_time, b.service_name FROM reservation a INNER JOIN service b ON a.service_code = b.service_code WHERE reservation_date=CURDATE() ORDER BY reservation_time";
 		ArrayList<DashboardDTO> list = new ArrayList<>();
 		try {
 			connection = dataSource.getConnection();			
@@ -83,8 +110,10 @@ public class DashboardDAO {
 			
 			while(resultSet.next()){
 				DashboardDTO board = new DashboardDTO();
-				board.setRes_time(resultSet.getString("res_time"));
-				board.setSer_name(resultSet.getString("ser_name"));
+				System.out.println(resultSet.getObject("reservation_time", LocalDateTime.class));
+				
+				//board.setReservation_time
+				board.setService_name(resultSet.getString("service_name"));
 				
 				list.add(board);
 			}

@@ -11,25 +11,37 @@
     <title>DashBoard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="assets/css/calendar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/css/calendar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">    
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
-    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
-    <link rel="stylesheet" href="assets/vendors/apexcharts/apexcharts.css">
-    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/app.css">
-    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/apexcharts/apexcharts.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/css/app.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/views/assets/images/favicon.svg" type="image/x-icon">
 
 	<style>
+		a {
+		    color: inherit;  /* 부모 요소의 텍스트 색상을 따르도록 설정 */
+		    text-decoration: none;  /* 밑줄 없애기 */
+		}		
+		a:visited {
+		    color: inherit;
+		}		
+		a:hover {
+		    color: inherit;
+		}		
+		a:active {
+		    color: inherit;
+		}
 		td {
 			white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 			overflow: hidden; /* 넘치는 텍스트 숨기기 */
 			text-overflow: ellipsis; /* 넘치는 부분 '...'으로 표시 */
-			max-width: 150px; /* 최대 너비 설정 */
-			padding-bottom: 0px;
+			font-size: small;
 		}		
 		.bi-plus-square {
 			display: inline-block;
@@ -49,6 +61,12 @@
 			display: inline-block;
 			transform: translateY(3px);
 		}
+		.list-group-item.detail{
+			font-size: small;
+			white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+			overflow: hidden; /* 넘치는 텍스트 숨기기 */
+			text-overflow: ellipsis; /* 넘치는 부분 '...'으로 표시 */
+		}
 	</style>
 </head>
 
@@ -62,6 +80,9 @@
 		int totalPage1 = 0; 		//총 페이지 수
 		int nowPage1 = 0; 		//현재 페이지
 		int beginPerPage1 = 0; 	//페이지별 시작번호
+		
+		ArrayList<DashboardDTO> list0 = (ArrayList<DashboardDTO>) dashDAO.getNotice();
+		
 		ArrayList<DashboardDTO> list1 = (ArrayList<DashboardDTO>) dashDAO.getProduct();
 		totalRecord1 = list1.size();
 		totalPage1 = (totalRecord1 + numPerPage - 1) / numPerPage;
@@ -119,7 +140,7 @@
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item active ">
-                            <a href="dashboard.jsp" class='sidebar-link'>
+                            <a href="/FirstProject/Controller?command=DASHBOARD" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>HOME</span>
                             </a>
@@ -132,10 +153,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="customer.jsp">회원 관리</a>
+                                    <a href="/FirstProject/Controller?command=CUSTOMER">회원 관리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="customer.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=CUSTOMER">기타</a>
                                 </li>                                
                             </ul>
                         </li>
@@ -147,10 +168,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="reservation.jsp">예약 관리</a>
+                                    <a href="/FirstProject/Controller?command=RESERVATION">예약 관리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="reservation.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=RESERVATION">기타</a>
                                 </li>
                             </ul>
                         </li>
@@ -162,10 +183,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="service.jsp">서비스 관리</a>
+                                    <a href="/FirstProject/Controller?command=SERVICE">서비스 관리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="service.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=SERVICE">기타</a>
                                 </li>
                             </ul>
                         </li>
@@ -177,10 +198,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="product.jsp">상품 관리</a>
+                                    <a href="/FirstProject/Controller?command=PRODUCT">상품 관리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="product.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=PRODUCT">기타</a>
                                 </li>
                              </ul>
                         </li>
@@ -192,10 +213,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="member.jsp">직원 관리</a>
+                                    <a href="/FirstProject/Controller?command=MEMBER">직원 관리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="member.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=MEMBER">기타</a>
                                 </li>
                             </ul>
                         </li>
@@ -207,10 +228,10 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="notice_list.jsp">공지 사항</a>
+                                    <a href="/FirstProject/Controller?command=NOTICE">공지 사항</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="notice_list.jsp">기타</a>
+                                    <a href="/FirstProject/Controller?command=NOTICE">기타</a>
                                 </li>
                             </ul>
                         </li>
@@ -240,7 +261,7 @@
                                     <li>
                                     <i class="bi bi-person-fill" style="font-size:x-large;" ></i>
                        	 			<i class="bi bi-bell-fill" style="font-size:larger; line-height: 10px;" ></i>
-                        			<a href="login.jsp"><span class="badges badge bg-light-danger">로그아웃</span>&nbsp;<i class="bi bi-box-arrow-right " ></i></a>
+                        			<a href="/FirstProject/Controller?command=LOGIN"><span class="badges badge bg-light-danger">로그아웃</span>&nbsp;<i class="bi bi-box-arrow-right " ></i></a>
                         			</li>
                                 </ol>
                             </nav>                        
@@ -254,11 +275,17 @@
 	                        <div class="card">
 	                            <ul class="list-group">
 	                                <li class="list-group-item active text-center">공지&nbsp;<a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0); color:white;"
-										href="notice_list.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
-	                                <li class="list-group-item">시스템 사용법</li>
-	                                <li class="list-group-item">업데이트 안내</li>
-	                                <li class="list-group-item">사용법</li>
-	                                <li class="list-group-item">공지 오류해결</li>                                            
+										href="/FirstProject/Controller?command=NOTICE""notice_list.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
+	                               	<%
+										for(int i=0; i<list0.size(); i++){											
+											DashboardDTO board0 = list0.get(i);
+									%>
+										<li class="list-group-item text-bold-500 detail">
+											<a  href="notice_view.jsp"> <%=board0.getNotice_title()%></a>
+										</li>
+									<%
+										}
+									%>                                         
 	                            </ul>
 	                        </div>
                         </div>
@@ -266,7 +293,7 @@
                         
                         <div class="col-lg-9 col-md-12">
                             <div class="card">
-                                <div id="bar"></div>
+                                <div id="line"></div>
 							</div>
                         </div>
 
@@ -281,7 +308,7 @@
                    	        <div class="card">
 	                            <ul class="list-group">
 	                                <li class="list-group-item active text-center">재고수량&nbsp;<a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0); color:white;"
-										href="product.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
+										href="/FirstProject/Controller?command=PRODUCT"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
 	                            </ul>
 								<table class="table table-bordered mb-0">
 									<%
@@ -290,8 +317,8 @@
 											DashboardDTO board1 = list1.get(i);
 									%>
 										<tr>
-											<td class="text-bold-500"><%=board1.getPd_name()%></td>
-											<td class="text-bold-500"><%=board1.getPd_ea()%>개</td>
+											<td class="text-bold-500"><%=board1.getProduct_name()%></td>
+											<td class="text-bold-500"><%=board1.getProduct_ea()%>개</td>
 										</tr>
 									<%
 										}
@@ -341,7 +368,7 @@
 	                        <div class="card">
 	                            <ul class="list-group">
 	                                <li class="list-group-item active text-center"><jsp:getProperty property="month" name="ld"/>월 <jsp:getProperty property="day" name="ld"/>일 예약현황&nbsp;<a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0); color:white;"
-										href="reservation.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
+										href="/FirstProject/Controller?command=RESERVATION"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
 	                            </ul>                                        
               					<table class="table table-bordered mb-0">
 									<%
@@ -350,8 +377,8 @@
 											DashboardDTO board2 = list2.get(i);
 									%>
 										<tr>
-											<td class="text-bold-500"><%=board2.getRes_time()%></td>
-											<td class="text-bold-500"><%=board2.getSer_name()%></td>
+											<td class="text-bold-500"><%=board2.getReservation_time()%></td>
+											<td class="text-bold-500"><%=board2.getService_name()%></td>
 										</tr>
 									<%
 										}
@@ -391,12 +418,12 @@
 	        </div>
 	    </div>
     </div>
-<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendors/apexcharts/apexcharts.js"></script>
-<script src="assets/js/pages/dashboard.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/calendar.js" defer></script>
+<script src="${pageContext.request.contextPath}/views/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="${pageContext.request.contextPath}/views/assets/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/views/assets/vendors/apexcharts/apexcharts.js"></script>
+<script src="${pageContext.request.contextPath}/views/assets/js/pages/ui-apexchart.js"></script>
+<script src="${pageContext.request.contextPath}/views/assets/js/main.js"></script>
+<script src="${pageContext.request.contextPath}/views/assets/js/calendar.js" defer></script>
 </body>
 
 </html>

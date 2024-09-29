@@ -31,12 +31,6 @@
 		a:active {
 		    color: inherit;
 		}
-		td {
-			white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-			overflow: hidden; /* 넘치는 텍스트 숨기기 */
-			text-overflow: ellipsis; /* 넘치는 부분 '...'으로 표시 */
-			font-size: small;
-		}
 		.bi-plus-square {
 			display: inline-block;
 			transform: translateY(2px);
@@ -66,33 +60,11 @@
 
 <body>
 <jsp:useBean id="noticeDAO" class="bean.NoticeDAO" ></jsp:useBean>
+<jsp:useBean id="noticeDTO" class="bean.NoticeDTO" />
 <%
-	ArrayList<NoticeDTO> list1 = (ArrayList)noticeDAO.getSNoticeList();
-	ArrayList<NoticeDTO> list2 = (ArrayList)noticeDAO.getGNoticeList();
-	
-	int totalRecord = 0; 	//총 글의 개수
-	int numPerPage = 5; 	//한 페이지 당 보여질 글의 개수
-	int totalPage = 0; 		//총 페이지 수
-	int nowPage = 0; 		//현재 페이지
-	int beginPerPage = 0; 	//페이지별 시작번호
-	int pagePerBlock = 3;	//블럭 당 페이지 수
-	int totalBlock = 0; 	//총 블럭 수
-	int nowBlock = 0;		//현재 블럭
-	
-	String keyField = request.getParameter("keyField");
-	String keyWord = request.getParameter("keyWord");
-	
-	totalRecord = list2.size();
-	totalPage = (totalRecord + numPerPage - 1) / numPerPage;
-	
-	if(request.getParameter("nowPage") != null )
-	nowPage = Integer.parseInt(request.getParameter("nowPage"));
-	
-	beginPerPage = nowPage*numPerPage;
-	totalBlock = (totalPage + pagePerBlock - 1)/pagePerBlock;
-	
-	if(request.getParameter("nowBlock") != null )
-	nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
+	String notice_no = request.getParameter("notice_no");
+	noticeDTO = noticeDAO.getNotice(Integer.parseInt(notice_no));
+	ArrayList<NoticeDTO> list = (ArrayList)noticeDAO.getGNoticeList();
 %>
 <div id="app">
 	<div id="sidebar" class="active">
@@ -240,57 +212,34 @@
                         </div>
                     </div>
 				</div>
-				<hr style="height: 5px;">
-				<div class = "row form-group">
-						<form method="post" action="#" id="" class="col-4 d-flex">
-							<input type="text" class="form-control" placeholder="공지글 조회">
-							<input type="button" class="btn btn-outline-success"  value="조회">
-						</form>
-						<form class="col-8 d-flex" ></form>
-				</div>
+				<hr style="height: 5px;"><br><br>
 				<section class="section">
+					<div class="col-12">
+                            <h3><%=noticeDTO.getNotice_title() %></h3>
+                    </div>
 					<div class="col-12 d-flex justify-content-center align-items-center"></div>
+					<br><br>
 					<div class="row" id="table-hover-row">
 						<div class="col-12">
 							<div class="card">
 								<div class="card-content">
 									<div class="table-responsive">
-										<table class="table table-hover mb-0" id="table">
+										<table class="table mb-0" id="table">
 											<thead>
 												<tr>
-													<th style="width: 10%" class="text-center ">번호</th>
-													<th style="width: 50%" class="text-center ">제목</th>
-													<th style="width: 10%" class="text-center ">작성자</th>
-													<th style="width: 30%" class="text-center ">작성일</th>
+													<th style="width: 15%" class="text-center ">번호</th>
+													<th style="width: 55%" class="text-center ">내용</th>
+													<th style="width: 15%" class="text-center ">작성자</th>
+													<th style="width: 15%" class="text-center ">작성일</th>
 												</tr>
 											</thead>
 											<tbody>
-												<%
-													for (NoticeDTO board : list1) {
-												%>
-
-														<tr>
-															<td style="width: 10%" class="text-center text-bold-500"><%=board.getNotice_no()%></td>
-															<td style="width: 50%" class="text-center text-bold-500"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-heart-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/></svg> <a href="notice_read.jsp?notice_no=<%=board.getNotice_no()  %>"><%=board.getNotice_title()%></a></td>
-															<td style="width: 10%" class="text-center text-bold-500">admin</td>
-															<td style="width: 30%" class="text-center text-bold-500"><%=board.getNotice_reg()%></td>
-														</tr>
-												<%
-													}
-														for(int i = beginPerPage; i < beginPerPage + numPerPage; i++){ 
-														if(i==totalRecord) break;
-														NoticeDTO board = list2.get(i);
-												%>
-
-														<tr>
-															<td style="width: 10%" class="text-center text-bold-500"><%=board.getNotice_no()%></td>
-															<td style="width: 50%" class="text-center text-bold-500"><a href="notice_read.jsp?notice_no=<%=board.getNotice_no() %>"><%=board.getNotice_title()%></a></td>
-															<td style="width: 10%" class="text-center text-bold-500">admin</td>
-															<td style="width: 30%" class="text-center text-bold-500"><%=board.getNotice_reg()%></td>
-														</tr>
-												<%
-													}
-												%>
+												<tr>
+													<td style="width: 15%" class="text-center text-bold-500"><%=noticeDTO.getNotice_no()%></td>
+													<td style="width: 55%" class="text-left text-bold-500"><%=noticeDTO.getNotice_content()%></td>
+													<td style="width: 15%" class="text-center text-bold-500">admin</td>
+													<td style="width: 15%" class="text-center text-bold-500"><%=noticeDTO.getNotice_reg()%></td>
+												</tr>
 											</tbody>
 										</table>
 									</div>
@@ -301,49 +250,16 @@
 					<div class="col-12 d-flex justify-content-center align-items-center">
 						<nav aria-label="Page navigation example">							
 							<ul class="pagination pagination-primary">
-								<%
-									if(0 == nowBlock ){
-								%>
-									<li class="page-item disabled">
-										<a class="page-link" href="#">
+									<li class="page-item">
+										<a class="page-link" href="notice_read.jsp?notice_no=<%=(noticeDTO.getNotice_no() == 1 ) ? 1 : noticeDTO.getNotice_no() - 1 %>">
 											<span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
 										</a>
 									</li>
-								<%
-									}else {
-								%>
 									<li class="page-item">
-										<a class="page-link" href="notice_list.jsp?nowPage=<%=(nowBlock-1)*pagePerBlock%>&nowBlock=<%=nowBlock - 1 %>">
-											<span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-										</a>
-									</li>
-								<%
-									}
-									for(int i=0; i < pagePerBlock; i++){
-								%>
-									<li class="page-item <%= (i == nowPage) ? "active" : "" %>">
-										<a class="page-link" href="notice_list.jsp?nowPage=<%=nowBlock*pagePerBlock + i%>&nowBlock=<%=nowBlock %>" ><%=(nowBlock*pagePerBlock + i + 1) %></a>
-									</li>
-								<%
-									}
-									if(nowBlock == totalBlock){
-								%>
-									<li class="page-item disabled">
-										<a class="page-link" href="#">
+										<a class="page-link" href="notice_read.jsp?notice_no=<%=(noticeDTO.getNotice_no() != list.size()-1 ) ? noticeDTO.getNotice_no() + 1 : noticeDTO.getNotice_no() %>">
 											<span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
 										</a>
 									</li>
-								<%
-									} else{
-								%>
-									<li class="page-item">
-										<a class="page-link" href="notice_list.jsp?nowPage=<%=(nowBlock + 1)*pagePerBlock%>&nowBlock=<%=nowBlock + 1 %>">
-											<span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-										</a>
-									</li>
-								<%
-									}
-								%>
 							</ul>
 						</nav>
 					</div>

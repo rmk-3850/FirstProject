@@ -46,10 +46,10 @@
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
                         <p class="text-gray-600">
-                        	<a href="/FirstProject/Controller" class="font-bold">회원가입</a>
+                        	<a href="#" class="font-bold">회원가입</a>
                         </p>
                         <p>
-                        	<a class="font-bold" href="auth-forgot-password.html">비밀번호를 잊으셨나요?</a>
+                        	<a class="font-bold" href="#">비밀번호를 잊으셨나요?</a>
                         </p>
                     </div>
                 </div>

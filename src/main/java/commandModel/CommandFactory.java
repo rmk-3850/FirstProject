@@ -17,6 +17,8 @@ public class CommandFactory {
 			return new LoginConfirmCommand();
 		}else if(command.equals("SIGNUP")) {
 			return new SignupCommand();
+		}else if(command.equals("DASHBOARD")) {
+			return new DashboardCommand();
 		}else if(command.equals("CUSTOMER")) {			
 			return new CustomerCommand();
 		}else if(command.equals("RESERVATION")) {

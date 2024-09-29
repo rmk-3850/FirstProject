@@ -1,10 +1,117 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+package dashboard;
 
-</body>
-</html>
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+@WebServlet("/ChartDataServlet")
+public class ChartDataServlet extends HttpServlet {
+    private Context context = null;
+    private DataSource dataSource = null;
+    private Connection connection = null;
+    private PreparedStatement statement = null;
+    private ResultSet resultSet = null;
+	
+    protected void init() throws ServletException, IOException {
+    	super.init();
+    	try {
+            context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
+        } catch (NamingException e) {
+            System.out.println("[ChartDataServlet] Message : " + e.getMessage());
+            System.out.println("[ChartDataServlet] Class   : " + e.getClass().getSimpleName());
+        }
+    }
+	
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sql = "SELECT ser_name, (ser_price * ser_cnt) AS sales FROM ser";
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{"); // JSON 객체 시작
+
+        try {
+            connection = dataSource.getConnection();            
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            
+            boolean first = true; // 첫 번째 항목인지 확인
+
+            while (resultSet.next()) {
+                if (!first) {
+                    jsonBuilder.append(","); // 첫 번째 항목이 아닐 경우 쉼표 추가
+                }
+                String serName = resultSet.getString("ser_name");
+                int sales = resultSet.getInt("sales");
+                jsonBuilder.append("\"").append(serName).append("\": ").append(sales);
+                first = false; // 첫 번째 항목 처리 후 false로 변경
+            }
+            
+            jsonBuilder.append("}"); // JSON 객체 끝
+            
+            // 데이터 전송
+            response.setContentType("application/json");
+            response.getWriter().write(jsonBuilder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 서버에서 데이터 가져오기
+    fetch('/ChartDataServlet') // 서블릿 경로
+        .then(response => response.json())
+        .then(data => {
+            const labels = Object.keys(data);  // x축 라벨
+            const values = Object.values(data);  // y축 값
+			var lineOptions = {
+			                chart: {
+			                    type: 'line',
+			                },
+			                series: [{
+			                    name: '총 매출',
+			                    data: values
+			                }],
+			                xaxis: {
+			                    categories: labels
+			                },
+			            };
+						
+			var line = new ApexCharts(document.querySelector("#line"), lineOptions);
+			line.render();
+        })
+		
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+<div id="line"></div>
+<script src="assets/vendors/apexcharts/apexcharts.js"></script>
+<script src="assets/js/pages/ui-apexchart.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

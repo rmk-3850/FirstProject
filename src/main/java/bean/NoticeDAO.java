@@ -61,7 +61,7 @@ public class NoticeDAO {
 				dto.setNotice_no(resultSet.getInt("notice_no"));
 				dto.setNotice_title(resultSet.getString("notice_title"));
 				dto.setNotice_content(resultSet.getString("notice_content"));
-				dto.setNotice_reg(resultSet.getObject("notice_reg", LocalDate.class));				
+				dto.setNotice_reg(resultSet.getObject("notice_reg", LocalDate.class));
 				
 				list.add(dto);
 			}

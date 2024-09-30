@@ -270,7 +270,7 @@
 												%>
 
 														<tr>
-															<td style="width: 10%" class="text-center text-bold-500"><%=board.getNotice_no()%></td>
+															<td style="width: 10%" class="text-center text-bold-500"><i class="bi bi-pin-angle-fill"></i></td>
 															<td style="width: 50%" class="text-center text-bold-500"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-heart-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/></svg> <a href="notice_read.jsp?notice_no=<%=board.getNotice_no()  %>"><%=board.getNotice_title()%></a></td>
 															<td style="width: 10%" class="text-center text-bold-500">admin</td>
 															<td style="width: 30%" class="text-center text-bold-500"><%=board.getNotice_reg()%></td>
@@ -299,7 +299,7 @@
 						</div>
 					</div>
 					<div class="col-12 d-flex justify-content-center align-items-center">
-						<nav aria-label="Page navigation example">							
+  
 							<ul class="pagination pagination-primary">
 								<%
 									if(0 == nowBlock ){
@@ -319,14 +319,35 @@
 									</li>
 								<%
 									}
-									for(int i=0; i < pagePerBlock; i++){
+									if(nowBlock != totalBlock-1){
+										for(int i=0; i < pagePerBlock; i++){
 								%>
-									<li class="page-item <%= (i == nowPage) ? "active" : "" %>">
-										<a class="page-link" href="notice_list.jsp?nowPage=<%=nowBlock*pagePerBlock + i%>&nowBlock=<%=nowBlock %>" ><%=(nowBlock*pagePerBlock + i + 1) %></a>
-									</li>
-								<%
+											<li class="page-item <%= (i == nowPage % pagePerBlock) ? "active" : "" %>">
+												<a class="page-link" href="notice_list.jsp?nowPage=<%=nowBlock*pagePerBlock + i%>&nowBlock=<%=nowBlock %>" ><%=(nowBlock*pagePerBlock + i + 1) %></a>
+											</li>
+								<%	
+										}
+									}else{
+										if(totalPage%pagePerBlock !=0 ){
+											for(int i=0; i < totalPage%pagePerBlock; i++){
+												%>
+															<li class="page-item <%= (i == nowPage % pagePerBlock) ? "active" : "" %>">
+																<a class="page-link" href="notice_list.jsp?nowPage=<%=nowBlock*pagePerBlock + i%>&nowBlock=<%=nowBlock %>" ><%=(nowBlock*pagePerBlock + i + 1) %></a>
+															</li>
+												<%
+											}
+										}else{
+											for(int i=0; i < pagePerBlock; i++){
+												%>
+													<li class="page-item <%= (i == nowPage % pagePerBlock) ? "active" : "" %>">
+														<a class="page-link" href="notice_list.jsp?nowPage=<%=nowBlock*pagePerBlock + i%>&nowBlock=<%=nowBlock %>" ><%=(nowBlock*pagePerBlock + i + 1) %></a>
+													</li>
+												<%	
+											
+											}
+										}
 									}
-									if(nowBlock == totalBlock){
+									if(nowBlock == totalBlock-1){
 								%>
 									<li class="page-item disabled">
 										<a class="page-link" href="#">
@@ -345,8 +366,7 @@
 									}
 								%>
 							</ul>
-						</nav>
-					</div>
+						</div>
 				</section>
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
@@ -366,6 +386,7 @@
 	</div>
 <script	src="${pageContext.request.contextPath}/views/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="${pageContext.request.contextPath}/views/assets/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/views/assets/js/main.js"></script></body>
+<script src="${pageContext.request.contextPath}/views/assets/js/main.js"></script>
+</body>
 
 </html>

@@ -78,7 +78,7 @@ public class DashboardDAO {
 		String sql = "SELECT product_name, product_ea FROM product WHERE product_ea < 4 ORDER BY product_ea";
 		ArrayList<DashboardDTO> list = new ArrayList<>();
 		try {
-			connection = dataSource.getConnection();			
+			connection = dataSource.getConnection();
 			statement = connection.prepareStatement(sql);
 			resultSet = statement.executeQuery();
 			

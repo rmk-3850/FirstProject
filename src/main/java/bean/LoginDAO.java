@@ -22,7 +22,7 @@ public class LoginDAO {
     public LoginDAO () {
         try {
             context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/my");
         } catch (NamingException e) {
             System.out.println("[LoginDAO] Message : " + e.getMessage());
             System.out.println("[LoginDAO] Class   : " + e.getClass().getSimpleName());

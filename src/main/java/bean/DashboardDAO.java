@@ -27,7 +27,7 @@ public class DashboardDAO {
     public DashboardDAO () {
         try {
             context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/my");
         } catch (NamingException e) {
             System.out.println("[DashboardDAO] Message : " + e.getMessage());
             System.out.println("[DashboardDAO] Class   : " + e.getClass().getSimpleName());

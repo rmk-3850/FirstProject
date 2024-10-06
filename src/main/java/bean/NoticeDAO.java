@@ -24,7 +24,7 @@ public class NoticeDAO {
     public NoticeDAO () {
         try {
             context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/acorn");
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/my");
         } catch (NamingException e) {
             System.out.println("[NoticeDAO] Message : " + e.getMessage());
             System.out.println("[NoticeDAO] Class   : " + e.getClass().getSimpleName());

@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/iconly/bold.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/apexcharts/apexcharts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/assets/css/app.css">
@@ -73,53 +72,9 @@
 <body>
     <jsp:useBean id="dashDAO" class="bean.DashboardDAO"></jsp:useBean>
     <%
-		request.setCharacterEncoding("utf-8");
-		int numPerPage = 5; 	//한 페이지 당 보여질 글의 개수
-		
-		int totalRecord1 = 0; 	//총 글의 개수
-		int totalPage1 = 0; 		//총 페이지 수
-		int nowPage1 = 0; 		//현재 페이지
-		int beginPerPage1 = 0; 	//페이지별 시작번호
-		
-		ArrayList<DashboardDTO> list0 = (ArrayList<DashboardDTO>) dashDAO.getNotice();
-		
+		ArrayList<DashboardDTO> list0 = (ArrayList<DashboardDTO>) dashDAO.getNotice();		
 		ArrayList<DashboardDTO> list1 = (ArrayList<DashboardDTO>) dashDAO.getProduct();
-		totalRecord1 = list1.size();
-		totalPage1 = (totalRecord1 + numPerPage - 1) / numPerPage;
-		if(request.getParameter("nowPage1") != null ){
-			nowPage1 = Integer.parseInt(request.getParameter("nowPage1"));
-			if(nowPage1 == -1){
-				if(totalPage1 > 0){
-					nowPage1 = totalPage1 - 1;
-				}
-				else nowPage1 = 0;
-			}
-			if(nowPage1 == totalPage1){
-				nowPage1 = 0;
-			}											
-		}		
-		beginPerPage1 = nowPage1*numPerPage;
-		
-		int totalRecord2 = 0; 	//총 글의 개수
-		int totalPage2 = 0; 		//총 페이지 수
-		int nowPage2 = 0; 		//현재 페이지
-		int beginPerPage2 = 0; 	//페이지별 시작번호
-		ArrayList<DashboardDTO> list2 = (ArrayList<DashboardDTO>) dashDAO.getReservation();
-		totalRecord2 = list2.size();
-		totalPage2 = (totalRecord2 + numPerPage - 1) / numPerPage;
-		if(request.getParameter("nowPage2") != null ){
-			nowPage2 = Integer.parseInt(request.getParameter("nowPage2"));
-			if(nowPage2 == -1){
-				if(totalPage2 > 0){
-					nowPage2 = totalPage2 - 1;
-				}
-				else nowPage2 = 0;
-			}
-			if(nowPage2 == totalPage2){
-				nowPage2 = 0;
-			}											
-		}		
-		beginPerPage2 = nowPage2*numPerPage;
+
     %>
 
     <div id="app">
@@ -311,34 +266,10 @@
 										href="/FirstProject/Controller?command=PRODUCT"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
 	                            </ul>
 								<table class="table table-bordered mb-0">
-									<%
-										for(int i = beginPerPage1; i < beginPerPage1 + numPerPage; i++){
-											if(i==totalRecord1) break;
-											DashboardDTO board1 = list1.get(i);
-									%>
-										<tr>
-											<td class="text-bold-500"><%=board1.getProduct_name()%></td>
-											<td class="text-bold-500"><%=board1.getProduct_ea()%>개</td>
-										</tr>
-									<%
-										}
-									%>
-										<tr>
-											<td align="center" colspan="2" class="calendar-wrapper">
-												<a href="dashboard.jsp?nowPage1=<%=nowPage1 - 1%>&nowPage2=<%=nowPage2%>"><span id="prev" class="icons material-symbols-rounded" style="display: inline-block; transform: translateY(3px);">chevron_left</span></a>
-											<%												
-												for(int i=0; i < totalPage1; i++){
-											%>
-												<i class="bi bi-dot"></i>
-											<%
-												}
-											%>
-												<a href="dashboard.jsp?nowPage1=<%=nowPage1 + 1%>&nowPage2=<%=nowPage2%>"><span id="next" class="icons material-symbols-rounded" style="display: inline-block; transform: translateY(3px);">chevron_right</span></a>
 
-											</td>
-										</tr>
+
 								</table>
-							</div>	                        
+							</div>
                         </div>
                         <div class="col-lg-6 col-md-12 d-flex justify-content-center align-items-center">							
 								<div class="calendar-wrapper">
@@ -371,6 +302,7 @@
 										href="/FirstProject/Controller?command=RESERVATION"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" /><path	d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" /></svg></a></li>
 	                            </ul>                                        
               					<table class="table table-bordered mb-0">
+              					<%--
 									<%
 										for(int i = beginPerPage2; i < beginPerPage2 + numPerPage; i++){
 											if(i==totalRecord2) break;
@@ -397,6 +329,7 @@
 
 											</td>
 										</tr>
+										 --%>
 								</table>
 	                        </div>
                         </div>

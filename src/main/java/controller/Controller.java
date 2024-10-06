@@ -54,8 +54,10 @@ public class Controller extends HttpServlet {
 		url = iCmd.processCommand(req, resp);
 		RequestDispatcher view = req.getRequestDispatcher(url);
 		view.forward(req, resp);
+			
 		
 		
+		/*
 		//대시보드 매출 그래프
         String sql = "SELECT service_name, (service_price * service_cnt) AS sales FROM service";
         StringBuilder jsonBuilder = new StringBuilder();
@@ -86,7 +88,7 @@ public class Controller extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
+		*/
 
 		
 	}

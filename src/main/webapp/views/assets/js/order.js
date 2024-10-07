@@ -83,7 +83,7 @@ span.id= 'sum_span';
 span.setAttribute("class", "badge bg-primary");
 span.style.marginLeft = "10px";
 const totalsum_btn = document.getElementById("totalsum");
-	totalsum_btn.addEventListener("click", ()=>{
+totalsum_btn.addEventListener("click", ()=>{
 	let totalsum = 0;
 	let sum_div = document.querySelectorAll(".sum-div");
 	for(let div of sum_div){
@@ -94,4 +94,11 @@ const totalsum_btn = document.getElementById("totalsum");
 	let sum_span = document.getElementById("sum_span");
 	let sum = totalsum.toLocaleString();
 	sum_span.textContent =  `총 ${sum}원`;
+});
+
+const orderBtn = document.getElementById("orderBtn");
+orderBtn.addEventListener("click", ()=>{
+	let sum_span = document.getElementById("sum_span");
+	let totalsum = sum_span.textContent;
+	
 });

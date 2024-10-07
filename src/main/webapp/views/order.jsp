@@ -12,36 +12,13 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+<link rel="stylesheet" href="/TeamProject/views/assets/css/page.css">
 <style>
-		button {
-            background-color: rgb(42, 105, 241);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            height: 25px;
-            width: 50px;
-            cursor: pointer;
-        }
-		.bi-person-fill{
-			display: inline-block;
-			transform: translateY(6px);
-			margin-right: 5px;
-		}
-		.bi-bell-fill{
-			display: inline-block;
-			transform: translateY(3px);
-			margin-right: 5px;
-		}
-		.bi-box-arrow-right{
-			display: inline-block;
-			transform: translateY(3px);
-		}
-		.btn-order{
-			width: 3em;
-			height: 3em;
-			display: inline-block;
-		}
-		
+    .btn-order{
+		width: 3em ;
+		height: 3em ;
+		display: inline-block ;
+	}
 </style>
 </head>
 <body>
@@ -64,7 +41,7 @@
 		 <button id="totalsum" >합계</button>
 		 <br><br>
 		 <div class="footer">
-			 <button>발주</button>
+			 <button id="orderBtn">발주</button>
 		 </div>
 	</div>
 <jsp:include page="/views/footer.jsp"></jsp:include>
